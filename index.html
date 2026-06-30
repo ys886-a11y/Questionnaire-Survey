@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Expert Questionnaire - PFSC Sustainability Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            line-height: 1.6;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        h2 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+
+        .objective-list {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .objective-list li {
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #333;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 15px;
+            height: 15px;
+        }
+
+        .checkbox-item label {
+            display: inline;
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 11px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #333;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 11px;
+        }
+
+        .remarks-input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #333;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 11px;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .disclosure {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .submit-btn {
+            background-color: #2c5f2d;
+            color: white;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #1e4620;
+        }
+
+        .submit-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+    <script>
+        // Helper functions for creating form elements
+        function createImpactDropdown(name) {
+            return `
+                <select name="${name}">
+                    <option value="">Choose an item.</option>
+                    <option value="1">1 - No Impact</option>
+                    <option value="2">2 - Low Impact</option>
+                    <option value="3">3 - Moderate Impact</option>
+                    <option value="4">4 - High Impact</option>
+                    <option value="5">5 - Very High Impact</option>
+                </select>
+            `;
+        }
+
+        function createYesNoDropdown(name) {
+            return `
+                <select name="${name}">
+                    <option value="">Choose an item.</option>
+                    <option value="Y">Y - Yes</option>
+                    <option value="N">N - No</option>
+                </select>
+            `;
+        }
+
+        function createImportanceDropdown(name) {
+            return `
+                <select name="${name}">
+                    <option value="">Choose an item.</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            `;
+        }
+
+        function createRemarksInput(name) {
+            return `<input type="text" class="remarks-input" name="${name}">`;
+        }
+
+        // Generate barrier table rows
+        function generateBarrierRows(barriers, prefix) {
+            return barriers.map(barrier => {
+                const id = barrier.id || barrier.text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                return `
+                    <tr>
+                        <td>${barrier.text}</td>
+                        <td>${createImpactDropdown('impact-' + id)}</td>
+                        <td>${createYesNoDropdown('correct-' + id)}</td>
+                        <td>${createRemarksInput('remarks-' + id)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Generate indicator table rows
+        function generateIndicatorRows(indicators) {
+            return indicators.map(indicator => {
+                const id = indicator.id;
+                return `
+                    <tr>
+                        <td>${indicator.name}</td>
+                        <td>${indicator.definition}</td>
+                        <td>${createImportanceDropdown('importance-' + id)}</td>
+                        <td>${createYesNoDropdown('measurable-' + id)}</td>
+                        <td>${createYesNoDropdown('relevant-' + id)}</td>
+                        <td>${createRemarksInput('remarks-' + id)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Data definitions
+        const barriersData = {
+            economics: [
+                { text: 'Lack of incentives for sustainable practices', id: 'incentives' },
+                { text: 'High costs associated with sustainability efforts', id: 'costs' },
+                { text: 'Inadequate infrastructure and facility support', id: 'infrastructure' },
+                { text: 'Insufficient handling infrastructure', id: 'handling' },
+                { text: 'Absence of food safety certifications', id: 'certifications' },
+                { text: 'Lack of management commitment', id: 'management' },
+                { text: 'Declining producer incomes', id: 'incomes' }
+            ],
+            environmental: [
+                { text: 'Absence of green maintenance practices', id: 'green-maintenance' },
+                { text: 'Inadequate capacity-building for sustainable products', id: 'capacity-building' },
+                { text: 'Limited access to green technologies', id: 'green-tech' },
+                { text: 'Lack of sustainability performance measurement', id: 'performance' },
+                { text: 'Low awareness of environmental impact of products', id: 'awareness-env' },
+                { text: 'Absence of sustainability-focused planning', id: 'planning' },
+                { text: 'Lack of eco-friendly maintenance strategies', id: 'eco-maintenance' }
+            ],
+            social: [
+                { text: 'Low awareness of sustainability benefits', id: 'awareness-benefits' },
+                { text: 'Weak corporate social responsibility culture', id: 'csr' },
+                { text: 'Lack of consumer knowledge and awareness', id: 'consumer' },
+                { text: 'Weak legislative support for sustainability', id: 'legislative' },
+                { text: 'Overly complex and insufficient government support', id: 'government' },
+                { text: 'No traceability systems in place', id: 'traceability' },
+                { text: 'Lack of technical know-how', id: 'technical' },
+                { text: 'Limited farmer knowledge and engagement', id: 'farmer-knowledge' },
+                { text: 'Lack of training and development programs', id: 'training' },
+                { text: 'Poor communication among stakeholders', id: 'communication' },
+                { text: 'Weak collaboration across the supply chain', id: 'collaboration' },
+                { text: 'Governance and policy issues', id: 'governance' },
+                { text: 'Issues related to urban expansion', id: 'urban' },
+                { text: 'Fragmented farmer networks', id: 'networks' },
+                { text: 'Lack of knowledge and education on sustainability', id: 'education' },
+                { text: "Poor understanding of sustainability's importance", id: 'understanding' }
+            ],
+            functional: [
+                { text: 'Exposure to natural disasters', id: 'disasters' },
+                { text: 'Inaccurate demand forecasting', id: 'forecasting' },
+                { text: 'Shortage of skilled labor', id: 'labor' },
+                { text: 'Inadequate information systems', id: 'information' },
+                { text: 'High overhead costs', id: 'overhead' },
+                { text: 'Labor disputes and unrest', id: 'disputes' },
+                { text: 'Uncertainty in operational processes', id: 'uncertainty' },
+                { text: 'Poor worker safety practices', id: 'worker-safety' },
+                { text: 'Ineffective demand management', id: 'demand-mgmt' }
+            ],
+            operational: [
+                { text: 'Inadequate transportation or logistics systems', id: 'transportation' },
+                { text: 'Poor cold chain infrastructure', id: 'cold-chain' },
+                { text: 'Delays in raw material delivery', id: 'delays' },
+                { text: 'Fluctuating fuel prices', id: 'fuel' },
+                { text: 'Inefficient packaging practices', id: 'packaging' },
+                { text: 'Vulnerability to power outages', id: 'power' },
+                { text: 'High perishability of products', id: 'perishability' },
+                { text: 'Poor logistics and distribution systems', id: 'logistics-dist' },
+                { text: 'Inefficient harvest planning', id: 'harvest' },
+                { text: 'Seasonal supply variability', id: 'seasonal' },
+                { text: 'Disruption in transportation', id: 'disruption' },
+                { text: 'Inadequate storage facilities', id: 'storage' },
+                { text: 'Inefficient pre-harvest processes', id: 'pre-harvest' },
+                { text: 'Inconsistent temperature control', id: 'temperature' }
+            ],
+            strategic: [
+                { text: 'Supply chain volatility (price, demand, supply)', id: 'volatility' },
+                { text: 'Impact of climate change', id: 'climate' },
+                { text: 'Unpredictable climate-related disruptions', id: 'climate-disruptions' },
+                { text: 'Over-reliance on single suppliers', id: 'single-suppliers' },
+                { text: 'Growing population pressure', id: 'population' },
+                { text: 'Price instability', id: 'price-instability' },
+                { text: 'Supplier financial instability or bankruptcy', id: 'supplier-financial' }
+            ],
+            integrated: [
+                { text: 'High cost of cold chain infrastructure affects both eco-efficiency and adaptive logistics', id: 'int-cold-chain' },
+                { text: 'Poor cold chain systems lead to spoilage, emissions, and safety issues', id: 'int-spoilage' },
+                { text: 'Lack of real-time monitoring tools for temperature, emissions, and quality', id: 'int-monitoring' },
+                { text: 'Inadequate investment in circular systems (e.g., waste reuse, energy recovery)', id: 'int-circular' },
+                { text: 'Waste from poor coordination during public health or climate disruptions', id: 'int-waste' },
+                { text: 'Inefficient packaging affects product life and adds to transport emissions', id: 'int-packaging' },
+                { text: 'Inflexible logistics increase spoilage and prevent crisis response', id: 'int-logistics' },
+                { text: 'Energy-intensive storage solutions increase resilience but compromise environmental sustainability', id: 'int-energy-storage' },
+                { text: 'No climate-risk modeling in infrastructure planning', id: 'int-climate-modeling' },
+                { text: 'Lack of modular processing for quick, low-energy operations during supply shocks', id: 'int-modular' },
+                { text: 'Single-source supplier reliance increases disruption risk and import-related emissions', id: 'int-single-source' },
+                { text: 'Limited technical skills for managing eco-compliance and emergency response', id: 'int-technical-skills' },
+                { text: "Weak digital integration among actor's limits traceability and sustainability oversight", id: 'int-digital' },
+                { text: 'Food loss due to poor harvest planning and volatile weather', id: 'int-food-loss' },
+                { text: 'Low consumer awareness hinders adoption of sustainable, local, resilient products', id: 'int-consumer-awareness' },
+                { text: 'Governance gaps weaken both sustainability policies and disaster preparedness', id: 'int-governance-gaps' },
+                { text: 'No traceability systems to support safety, emissions, or recall management', id: 'int-traceability' },
+                { text: 'Poor collaboration across actors limits circular innovation and adaptive logistics', id: 'int-collaboration' },
+                { text: 'Price instability discourages green investment and makes emergency planning costly', id: 'int-price-instability' },
+                { text: 'Climate-related supply shocks cause both emissions surges and food security gaps', id: 'int-climate-shocks' },
+                { text: 'No incentives for integrating sustainability and resilience in PFSC design', id: 'int-incentives' },
+                { text: 'Urban expansion disrupts infrastructure, increases emissions, and weakens PFSC access', id: 'int-urban' },
+                { text: 'Fragmented farmer networks reduce access to climate-resilient and sustainable tools', id: 'int-farmer-networks' },
+                { text: 'Seasonal variability increases waste and disrupts steady, low-emission supply models', id: 'int-seasonal' },
+                { text: 'No platform for real-time cross-chain decisions (e.g., rerouting due to temperature risk + delivery failures)', id: 'int-platform' },
+                { text: 'Lack of training on perishable product handling in changing environments', id: 'int-training' },
+                { text: 'Labor shortages affect quality control, waste, and system responsiveness', id: 'int-labor-shortages' },
+                { text: 'Inadequate storage results in economic losses and resource inefficiency', id: 'int-storage-losses' },
+                { text: 'High perishability not matched with digital shelf-life tracking systems', id: 'int-perishability-tracking' },
+                { text: 'Absence of integrated emergency + sustainability KPIs in PFSC performance evaluation', id: 'int-kpis' }
+            ]
+        };
+
+        const resilienceIndicators = [
+            { id: 'sl', name: 'Service Level (SL)', definition: '% demand fulfilled on time in full' },
+            { id: 'tts', name: 'Time to Survive (TTS)', definition: 'Duration supply chain can run with existing resources after disruption' },
+            { id: 'r', name: 'Redundancy (R)', definition: 'Availability of backup suppliers/capacity' },
+            { id: 'ib', name: 'Inventory Buffer (IB)', definition: 'Level of safety stock available' },
+            { id: 'rei', name: 'Risk Exposure Index (REI)', definition: 'Probability × Impact of risks' },
+            { id: 'f', name: 'Flexibility (F)', definition: 'Ability to switch suppliers, products, or routes' },
+            { id: 'a', name: 'Agility (A)', definition: 'Speed of response to disruption' },
+            { id: 'ad', name: 'Adaptability (AD)', definition: 'Long-term capacity to restructure supply chain' },
+            { id: 'ttr', name: 'Time to Recover (TTR)', definition: 'Time required to restore normal operations' },
+            { id: 'rc', name: 'Recovery Cost (RC)', definition: 'Extra cost incurred in recovery' },
+            { id: 'rb', name: 'Robustness (RB)', definition: 'Performance maintained during disruption' },
+            { id: 'v', name: 'Visibility / Traceability (V)', definition: 'Proportion of nodes/flows monitored' },
+            { id: 'ci', name: 'Collaboration Index (CI)', definition: 'Degree of coordination among partners' },
+            { id: 'sr', name: 'Supplier Resilience (SR)', definition: 'Ability of suppliers to recover quickly' },
+            { id: 'dp', name: 'Disruption Probability (DP)', definition: 'Likelihood of disruptions' },
+            { id: 'pr', name: 'Preparedness (PR)', definition: 'Ratio of contingency plans to risks' },
+            { id: 'ri', name: 'Resilience Index (RI)', definition: 'Composite score combining multiple indicators' },
+            { id: 'csr', name: 'Composite Service Reliability (CSR)', definition: 'Reliability of meeting demand considering delays/shortages' }
+        ];
+
+        const sustainabilityIndicators = [
+            { id: 'wr', name: 'Waste Ratio (WR)', definition: '% of product lost/spoiled in supply chain' },
+            { id: 'cf', name: 'Carbon Footprint (CF)', definition: 'CO₂ equivalent emissions from transport/processing' },
+            { id: 'ec', name: 'Energy Consumption (EC)', definition: 'Energy used per liter/unit of product' },
+            { id: 'fe', name: 'Farmer Equity (FE)', definition: 'Ratio of minimum to maximum farmer payment' },
+            { id: 'wu', name: 'Water Usage (WU)', definition: 'Liters of water consumed per unit processed' },
+            { id: 'sw', name: 'Social Welfare (SW)', definition: 'Impact on farmer livelihood and consumer nutrition' },
+            { id: 'ep', name: 'Economic Profitability (EP)', definition: 'Ratio of total revenue to total cost' },
+            { id: 'cir', name: 'Circularity (CIR)', definition: 'Extent of recycling/reuse in packaging and by-products' }
+        ];
+
+        // Initialize tables on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate barrier tables
+            document.getElementById('economics-tbody').innerHTML = generateBarrierRows(barriersData.economics, 'econ');
+            document.getElementById('environmental-tbody').innerHTML = generateBarrierRows(barriersData.environmental, 'env');
+            document.getElementById('social-tbody').innerHTML = generateBarrierRows(barriersData.social, 'social');
+            document.getElementById('functional-tbody').innerHTML = generateBarrierRows(barriersData.functional, 'func');
+            document.getElementById('operational-tbody').innerHTML = generateBarrierRows(barriersData.operational, 'oper');
+            document.getElementById('strategic-tbody').innerHTML = generateBarrierRows(barriersData.strategic, 'strat');
+            document.getElementById('integrated-tbody').innerHTML = generateBarrierRows(barriersData.integrated, 'int');
+            
+            // Generate indicator tables
+            document.getElementById('resilience-indicators-tbody').innerHTML = generateIndicatorRows(resilienceIndicators);
+            document.getElementById('sustainability-indicators-tbody').innerHTML = generateIndicatorRows(sustainabilityIndicators);
+        });
+
+        // Form submission handler
+        function submitForm(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            // Disable submit button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Show processing message
+            statusMessage.className = 'status-message info';
+            statusMessage.textContent = 'Processing your submission...';
+            statusMessage.style.display = 'block';
+            
+            // Collect all form data in flat structure
+            const formData = collectFormData();
+            
+            // Google Apps Script Web App URL (replace with your deployed script URL)
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbztkHP3-bkqsLSubzKAsdaun94l03P2FmJeD9hz1EZikOrLwwRgFQDk0uxZlajDaDXZQg/exec';
+            
+            // Convert JSON to URLSearchParams for FormData submission
+            const formDataParams = new URLSearchParams();
+            Object.keys(formData).forEach(key => {
+                formDataParams.append(key, formData[key]);
+            });
+            
+            // Submit to Google Apps Script using XMLHttpRequest for better compatibility
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', scriptURL);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = function() {
+                if (xhr.status === 200 || xhr.status === 302) {
+                    // Show success message
+                    statusMessage.className = 'status-message success';
+                    statusMessage.textContent = 'Form submitted successfully! Thank you for your response.';
+                    
+                    // Reset form
+                    document.getElementById('questionnaireForm').reset();
+                    
+                    // Scroll to top to show success message
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    // Show error message
+                    statusMessage.className = 'status-message error';
+                    statusMessage.textContent = 'Error submitting form (Status: ' + xhr.status + '). Please try again.';
+                }
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Questionnaire';
+            };
+            
+            xhr.onerror = function() {
+                // Show error message
+                statusMessage.className = 'status-message error';
+                statusMessage.textContent = 'Network error. Please check your connection and try again.';
+                
+                // Re-enable submit button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Questionnaire';
+            };
+            
+            xhr.send(formDataParams.toString());
+        }
+
+        // Collect all form data in flat structure for Google Sheets
+        function collectFormData() {
+            const formData = {
+                timestamp: new Date().toISOString(),
+                
+                // Section A: Respondent Profile
+                name: document.getElementById('name').value || '',
+                position: document.getElementById('position').value || '',
+                education: document.getElementById('education').value || '',
+                organization: document.getElementById('organization').value || '',
+                sector_retail: document.querySelector('input[name="sector-retail"]')?.checked || false,
+                sector_wholesale: document.querySelector('input[name="sector-wholesale"]')?.checked || false,
+                sector_logistics: document.querySelector('input[name="sector-logistics"]')?.checked || false,
+                sector_processing: document.querySelector('input[name="sector-processing"]')?.checked || false,
+                sector_farming: document.querySelector('input[name="sector-farming"]')?.checked || false,
+                sector_academic: document.querySelector('input[name="sector-academic"]')?.checked || false,
+                
+                // Section E: Expert Feedback
+                feedback_question1: document.getElementById('question1')?.value || '',
+                feedback_question2: document.getElementById('question2')?.value || '',
+                feedback_question3: document.getElementById('question3')?.value || '',
+                feedback_question4: document.getElementById('question4')?.value || ''
+            };
+            
+            // Collect all barrier ratings (Economics)
+            barriersData.economics.forEach(barrier => {
+                const id = barrier.id;
+                formData[`econ_${id}_impact`] = document.querySelector(`select[name="impact-${id}"]`)?.value || '';
+                formData[`econ_${id}_correct`] = document.querySelector(`select[name="correct-${id}"]`)?.value || '';
+                formData[`econ_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all barrier ratings (Environmental)
+            barriersData.environmental.forEach(barrier => {
+                const id = barrier.id;
+                formData[`env_${id}_impact`] = document.querySelector(`select[name="impact-${id}"]`)?.value || '';
+                formData[`env_${id}_correct`] = document.querySelector(`select[name="correct-${id}"]`)?.value || '';
+                formData[`env_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all barrier ratings (Social)
+            barriersData.social.forEach(barrier => {
+                const id = barrier.id;
+                formData[`social_${id}_impact`] = document.querySelector(`select[name="impact-${id}"]`)?.value || '';
+                formData[`social_${id}_correct`] = document.querySelector(`select[name="correct-${id}"]`)?.value || '';
+                formData[`social_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all barrier ratings (Functional)
+            barriersData.functional.forEach(barrier => {
+                const id = barrier.id;
+                formData[`func_${id}_impact`] = document.querySelector(`select[name="impact-${id}"]`)?.value || '';
+                formData[`func_${id}_correct`] = document.querySelector(`select[name="correct-${id}"]`)?.value || '';
+                formData[`func_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all barrier ratings (Operational)
+            barriersData.operational.forEach(barrier => {
+                const id = barrier.id;
+                formData[`oper_${id}_impact`] = document.querySelector(`select[name="impact-${id}"]`)?.value || '';
+                formData[`oper_${id}_correct`] = document.querySelector(`select[name="correct-${id}"]`)?.value || '';
+                formData[`oper_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all barrier ratings (Strategic)
+            barriersData.strategic.forEach(barrier => {
+                const id = barrier.id;
+                formData[`strat_${id}_impact`] = document.querySelector(`select[name="impact-${id}"]`)?.value || '';
+                formData[`strat_${id}_correct`] = document.querySelector(`select[name="correct-${id}"]`)?.value || '';
+                formData[`strat_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all barrier ratings (Integrated)
+            barriersData.integrated.forEach(barrier => {
+                const id = barrier.id;
+                formData[`int_${id}_impact`] = document.querySelector(`select[name="impact-${id}"]`)?.value || '';
+                formData[`int_${id}_correct`] = document.querySelector(`select[name="correct-${id}"]`)?.value || '';
+                formData[`int_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all resilience indicator ratings
+            resilienceIndicators.forEach(indicator => {
+                const id = indicator.id;
+                formData[`res_${id}_importance`] = document.querySelector(`select[name="importance-${id}"]`)?.value || '';
+                formData[`res_${id}_measurable`] = document.querySelector(`select[name="measurable-${id}"]`)?.value || '';
+                formData[`res_${id}_relevant`] = document.querySelector(`select[name="relevant-${id}"]`)?.value || '';
+                formData[`res_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            // Collect all sustainability indicator ratings
+            sustainabilityIndicators.forEach(indicator => {
+                const id = indicator.id;
+                formData[`sus_${id}_importance`] = document.querySelector(`select[name="importance-${id}"]`)?.value || '';
+                formData[`sus_${id}_measurable`] = document.querySelector(`select[name="measurable-${id}"]`)?.value || '';
+                formData[`sus_${id}_relevant`] = document.querySelector(`select[name="relevant-${id}"]`)?.value || '';
+                formData[`sus_${id}_remarks`] = document.querySelector(`input[name="remarks-${id}"]`)?.value || '';
+            });
+            
+            return formData;
+        }
+    </script>
+</head>
+<body>
+    <form id="questionnaireForm" onsubmit="submitForm(event)">
+    <h1>Comprehensive Expert Questionnaire<br>
+    Validation and Assessment of barriers, Indicators, and Enablers Affecting sustainability in perishable food supply chains (PFSCs).</h1>
+
+    <h2>Objective</h2>
+    <p>The objective of this study is to identify, validate, and assess the barriers, indicators, and enablers influencing sustainability, resilience, and their integration in perishable food supply chains (PFSCs). The expert responses will help to:</p>
+
+    <ol class="objective-list">
+        <li>Assess the impact and importance of various barriers and indicators.</li>
+        <li>Validate the correct categorization of sustainability and resilience dimensions.</li>
+        <li>Develop a comprehensive framework integrating sustainability and resilience for PFSCs.</li>
+    </ol>
+
+    <div class="disclosure">
+        <h2>Disclosure</h2>
+        <p>This questionnaire is designed solely for academic and research purposes. All responses will remain strictly confidential and will be used only in an aggregated form for analysis. No individual or organization will be identified. Participation is voluntary, and experts may withdraw at any stage. The researchers declare no conflict of interest.</p>
+    </div>
+
+    <div class="section">
+        <h2>Section A: Respondent Profile</h2>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+        </div>
+
+        <div class="form-group">
+            <label for="position">Position:</label>
+            <input type="text" id="position" name="position">
+        </div>
+
+        <div class="form-group">
+            <label for="education">Educational Qualification:</label>
+            <input type="text" id="education" name="education">
+        </div>
+
+        <div class="form-group">
+            <label for="organization">Organization/Affiliation:</label>
+            <input type="text" id="organization" name="organization">
+        </div>
+
+        <div class="form-group">
+            <label>Sector (Please tick):</label>
+            <div class="checkbox-group">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sector-academia" name="sector" value="Academia">
+                    <label for="sector-academia">Academia</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sector-government" name="sector" value="Government">
+                    <label for="sector-government">Government</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sector-industry" name="sector" value="Industry">
+                    <label for="sector-industry">Industry</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sector-ngo" name="sector" value="NGO">
+                    <label for="sector-ngo">NGO</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sector-logistics" name="sector" value="Logistics">
+                    <label for="sector-logistics">Logistics</label>
+                </div>
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sector-farmer" name="sector" value="Farmer/Producer Group">
+                    <label for="sector-farmer">Farmer/Producer Group</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Section B: Categorized Barriers</h2>
+        <p>For each barrier, indicate: Impact Level (1 = No Impact → 5 = Very High Impact), Correct Classification (Y/N), and provide any Comments or Suggestions.</p>
+
+        <h3>B1: (Sustainability-Related)</h3>
+        <h3>Economics:</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Barriers</th>
+                    <th style="width: 20%;">Impact (1-5)</th>
+                    <th style="width: 15%;">Correct? (Y/N)</th>
+                    <th style="width: 25%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="economics-tbody">
+            </tbody>
+        </table>
+
+        <h3>Environmental</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Barriers</th>
+                    <th style="width: 20%;">Impact (1-5)</th>
+                    <th style="width: 15%;">Correct? (Y/N)</th>
+                    <th style="width: 25%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="environmental-tbody">
+            </tbody>
+        </table>
+
+        <h3>Social</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Barriers</th>
+                    <th style="width: 20%;">Impact (1-5)</th>
+                    <th style="width: 15%;">Correct? (Y/N)</th>
+                    <th style="width: 25%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="social-tbody">
+            </tbody>
+        </table>
+
+        <h3>B2: (Resilience-Related)</h3>
+        <h3>Functional</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Barriers</th>
+                    <th style="width: 20%;">Impact (1-5)</th>
+                    <th style="width: 15%;">Correct? (Y/N)</th>
+                    <th style="width: 25%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="functional-tbody">
+            </tbody>
+        </table>
+
+        <h3>Operational</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Barriers</th>
+                    <th style="width: 20%;">Impact (1-5)</th>
+                    <th style="width: 15%;">Correct? (Y/N)</th>
+                    <th style="width: 25%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="operational-tbody">
+            </tbody>
+        </table>
+
+        <h3>Strategic</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Barriers</th>
+                    <th style="width: 20%;">Impact (1-5)</th>
+                    <th style="width: 15%;">Correct? (Y/N)</th>
+                    <th style="width: 25%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="strategic-tbody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Section C: Integrated barriers</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Integrated barriers</th>
+                    <th style="width: 20%;">Impact (1-5)</th>
+                    <th style="width: 15%;">Correct? (Y/N)</th>
+                    <th style="width: 25%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="integrated-tbody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Section D: Assessment of Resilience and Sustainability Indicators</h2>
+        <p>For each indicator, assess:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px; font-size: 12px;">
+            <li>Importance Level (1 = Not Important → 5 = Very Important)</li>
+            <li>Measurability (Y/N)</li>
+            <li>Relevance to PFSC (Y/N)</li>
+            <li>Remarks or Suggestions</li>
+        </ul>
+
+        <h3>Resilience Indicators</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Indicator</th>
+                    <th style="width: 30%;">Definition</th>
+                    <th style="width: 12%;">Importance (1-5)</th>
+                    <th style="width: 12%;">Measurable? (Y/N)</th>
+                    <th style="width: 12%;">Relevant? (Y/N)</th>
+                    <th style="width: 19%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="resilience-indicators-tbody">
+            </tbody>
+        </table>
+
+        <h3>Sustainability Indicators</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 15%;">Indicator</th>
+                    <th style="width: 30%;">Definition</th>
+                    <th style="width: 12%;">Importance (1-5)</th>
+                    <th style="width: 12%;">Measurable? (Y/N)</th>
+                    <th style="width: 12%;">Relevant? (Y/N)</th>
+                    <th style="width: 19%;">Remarks</th>
+                </tr>
+            </thead>
+            <tbody id="sustainability-indicators-tbody">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Section E: Expert Feedback</h2>
+
+        <div class="form-group">
+            <label for="question1">1. Are there additional barriers or indicators you suggest including?</label>
+            <textarea id="question1" name="question1" rows="4" style="width: 100%; padding: 8px; border: 1px solid #333; font-family: 'Times New Roman', Times, serif; font-size: 12px;"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="question2">2. Should any be redefined or reclassified?</label>
+            <textarea id="question2" name="question2" rows="4" style="width: 100%; padding: 8px; border: 1px solid #333; font-family: 'Times New Roman', Times, serif; font-size: 12px;"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="question3">3. Which indicators and barriers are most critical for PFSCs?</label>
+            <textarea id="question3" name="question3" rows="4" style="width: 100%; padding: 8px; border: 1px solid #333; font-family: 'Times New Roman', Times, serif; font-size: 12px;"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="question4">4. Any suggestions for better measurement or validation?</label>
+            <textarea id="question4" name="question4" rows="4" style="width: 100%; padding: 8px; border: 1px solid #333; font-family: 'Times New Roman', Times, serif; font-size: 12px;"></textarea>
+        </div>
+    </div>
+
+    <div class="submit-container">
+        <button type="submit" id="submitBtn" class="submit-btn">Submit Questionnaire</button>
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+    </form>
+
+</body>
+</html>
