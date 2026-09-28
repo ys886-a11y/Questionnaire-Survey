@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comprehensive Expert Questionnaire - PFSC Sustainability Assessment</title>
+<title>Expert Questionnaire – Sustainability &amp; Resilience in Perishable Food Supply Chains</title>
+<meta name="description" content="PhD research, Shiv Nadar Institute of Eminence. About 20–25 minutes; tap-to-answer, progress saves automatically.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ys886-a11y.github.io/Questionnaire-Survey/">
+<meta property="og:title" content="Expert Questionnaire: Sustainability &amp; Resilience in Perishable Food Supply Chains">
+<meta property="og:description" content="PhD research · Shiv Nadar Institute of Eminence. About 20–25 min · tap to answer · progress saves automatically.">
+<meta property="og:image" content="https://ys886-a11y.github.io/Questionnaire-Survey/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
@@ -96,6 +105,18 @@
   .btn-secondary { background: #fff; color: var(--accent); }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
   [hidden] { display: none !important; }
+  .skipbox { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); margin: 6px 0 10px; cursor: pointer; }
+  .skipbox input { width: 17px; height: 17px; accent-color: var(--accent); }
+  .skip-note { display: none; background: #fff; border: 1px dashed #b9c4b9; border-radius: 10px; padding: 14px; font-size: 14px; }
+  .page.skipped .skip-note { display: block; }
+  .page.skipped .lead, .page.skipped .legend, .page.skipped h3, .page.skipped .item { display: none; }
+  .later { text-align: center; margin: 22px 0 6px; }
+  .linkbtn { background: none; border: none; color: var(--accent); font: inherit; font-size: 14px; text-decoration: underline; cursor: pointer; padding: 6px; }
+  .modal { position: fixed; inset: 0; background: rgba(20,30,20,.45); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .modal-box { background: #fff; border-radius: 12px; padding: 20px; max-width: 420px; width: 100%; }
+  .modal-box h3 { margin-top: 0; }
+  .modal-box .linkline { word-break: break-all; font-size: 13px; background: var(--bg); padding: 8px 10px; border-radius: 6px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 14px; flex-wrap: wrap; }
   .researcher { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
   .researcher p { margin-bottom: 8px; }
   .researcher a { color: var(--accent); }
@@ -122,11 +143,11 @@
   <form id="questionnaireForm" novalidate>
 
     <!-- PAGE 1: intro + profile -->
-    <section class="page" data-title="Introduction &amp; profile">
+    <section class="page" data-title="Introduction &amp; profile" data-time="2">
       <h1>Expert Questionnaire: Barriers and Indicators for Sustainability and Resilience in Perishable Food Supply Chains (PFSCs)</h1>
 
       <div class="callout">
-        <strong>About 20 minutes · 6 short steps · your progress is saved automatically</strong>
+        <strong>About 20–25 minutes · 6 short steps · your progress is saved automatically</strong>
         You can close this page at any time and continue later on the same device and browser. Just tap a number for each item. Comments are optional.
       </div>
       <p id="draftNote" class="small"></p>
@@ -209,8 +230,10 @@
     </section>
 
     <!-- PAGE 2: B1 -->
-    <section class="page" data-title="Sustainability barriers">
+    <section class="page" data-title="Sustainability barriers" data-time="5">
       <h2>Section B1 · Sustainability-related barriers</h2>
+      <label class="skipbox"><input type="checkbox" id="skip-b1" data-skip> This area is outside my expertise — skip this step</label>
+      <p class="skip-note">You've skipped this step. Untick the box above if you'd like to answer it, or tap <b>Next</b> to continue.</p>
       <p class="lead">How much does each barrier affect sustainability in PFSCs? Tick <em>“Wrongly classified”</em> only if the barrier does not belong in its group.</p>
       <div class="legend"><span><b>1</b> No impact</span><span><b>2</b> Low</span><span><b>3</b> Moderate</span><span><b>4</b> High</span><span><b>5</b> Very high</span></div>
       <h3>Economic</h3><div id="economics-list"></div>
@@ -219,8 +242,10 @@
     </section>
 
     <!-- PAGE 3: B2 -->
-    <section class="page" data-title="Resilience barriers">
+    <section class="page" data-title="Resilience barriers" data-time="5">
       <h2>Section B2 · Resilience-related barriers</h2>
+      <label class="skipbox"><input type="checkbox" id="skip-b2" data-skip> This area is outside my expertise — skip this step</label>
+      <p class="skip-note">You've skipped this step. Untick the box above if you'd like to answer it, or tap <b>Next</b> to continue.</p>
       <p class="lead">How much does each barrier affect resilience in PFSCs? Tick <em>“Wrongly classified”</em> only if the barrier does not belong in its group.</p>
       <div class="legend"><span><b>1</b> No impact</span><span><b>2</b> Low</span><span><b>3</b> Moderate</span><span><b>4</b> High</span><span><b>5</b> Very high</span></div>
       <h3>Functional</h3><div id="functional-list"></div>
@@ -229,16 +254,20 @@
     </section>
 
     <!-- PAGE 4: C -->
-    <section class="page" data-title="Integrated barriers">
+    <section class="page" data-title="Integrated barriers" data-time="6">
       <h2>Section C · Integrated barriers</h2>
+      <label class="skipbox"><input type="checkbox" id="skip-c" data-skip> This area is outside my expertise — skip this step</label>
+      <p class="skip-note">You've skipped this step. Untick the box above if you'd like to answer it, or tap <b>Next</b> to continue.</p>
       <p class="lead">These barriers affect sustainability and resilience together. Rate their impact, and tick <em>“Not an integrated barrier”</em> if you think one affects only one of the two.</p>
       <div class="legend"><span><b>1</b> No impact</span><span><b>2</b> Low</span><span><b>3</b> Moderate</span><span><b>4</b> High</span><span><b>5</b> Very high</span></div>
       <div id="integrated-list"></div>
     </section>
 
     <!-- PAGE 5: D -->
-    <section class="page" data-title="Indicators">
+    <section class="page" data-title="Indicators" data-time="5">
       <h2>Section D · Resilience and sustainability indicators</h2>
+      <label class="skipbox"><input type="checkbox" id="skip-d" data-skip> This area is outside my expertise — skip this step</label>
+      <p class="skip-note">You've skipped this step. Untick the box above if you'd like to answer it, or tap <b>Next</b> to continue.</p>
       <p class="lead">Rate how important each indicator is for PFSCs. Tick a box only if the indicator is <em>not</em> practically measurable or <em>not</em> relevant to PFSCs.</p>
       <div class="legend"><span><b>1</b> Not important</span><span><b>2</b> Slightly</span><span><b>3</b> Moderately</span><span><b>4</b> Important</span><span><b>5</b> Very important</span></div>
       <h3>Resilience indicators</h3><div id="resilience-list"></div>
@@ -246,7 +275,7 @@
     </section>
 
     <!-- PAGE 6: E -->
-    <section class="page" data-title="Final feedback">
+    <section class="page" data-title="Final feedback" data-time="2">
       <h2>Section E · Expert feedback</h2>
       <p class="lead">All optional. Short notes are very welcome.</p>
       <div class="field"><label for="question1">1. Are there additional barriers or indicators you suggest including?</label><textarea id="question1" name="question1"></textarea></div>
@@ -262,6 +291,19 @@
       <p>Your response has been recorded. We truly appreciate your time and expertise.</p>
     </section>
   </form>
+</div>
+
+<div id="savedModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="savedTitle">
+  <div class="modal-box">
+    <h3 id="savedTitle">Your answers are saved</h3>
+    <p>They are stored on this device. To continue later, open the same link again on this phone or computer, in the same browser — you will return to where you left off.</p>
+    <p class="linkline" id="resumeLink"></p>
+    <p class="small" id="copyMsg"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" id="copyLink">Copy link</button>
+      <button type="button" class="btn btn-primary" id="closeModal">OK</button>
+    </div>
+  </div>
 </div>
 
 <nav class="nav" id="nav">
@@ -461,7 +503,7 @@ function showPage(i, scroll = true) {
   current = Math.max(0, Math.min(pages.length - 1, i));
   pages.forEach((p, k) => p.classList.toggle('active', k === current));
   document.getElementById('stepLabel').innerHTML =
-    `<strong>Step ${current + 1} of ${pages.length}</strong> · ${pages[current].dataset.title}`;
+    `<strong>Step ${current + 1} of ${pages.length}</strong> · ${pages[current].dataset.title} · ~${pages[current].dataset.time} min`;
   document.getElementById('backBtn').disabled = current === 0;
   const last = current === pages.length - 1;
   document.getElementById('nextBtn').hidden = last;
@@ -471,7 +513,7 @@ function showPage(i, scroll = true) {
 }
 
 function updateCounts() {
-  const all = Array.from(document.querySelectorAll('.item'));
+  const all = Array.from(document.querySelectorAll('.page:not(.skipped) .item'));
   let done = 0;
   all.forEach(item => {
     const ok = !!item.querySelector(`input[name="${item.dataset.rate}"]:checked`);
@@ -480,7 +522,7 @@ function updateCounts() {
   });
   document.getElementById('answeredLabel').textContent = `${done} of ${all.length} items rated`;
   document.getElementById('barFill').style.width = ((current + 1) / pages.length * 100) + '%';
-  const onPage = Array.from(pages[current].querySelectorAll('.item'));
+  const onPage = pages[current].classList.contains('skipped') ? [] : Array.from(pages[current].querySelectorAll('.item'));
   const pageDone = onPage.filter(it => it.classList.contains('done')).length;
   document.getElementById('pageCount').textContent = onPage.length ? `${pageDone} / ${onPage.length} on this page` : '';
   const left = all.length - done;
@@ -525,11 +567,12 @@ function restoreDraft() {
 function clearDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch (e) {} }
 
 // ---------- Submission (same column names as before) ----------
+function inSkipped(el) { const pg = el && el.closest('.page'); return !!(pg && pg.classList.contains('skipped')); }
 function val(name) {
   const el = document.querySelector(`input[name="${name}"]:checked`) || document.querySelector(`input[type="text"][name="${name}"]`);
-  return el ? el.value : '';
+  return el && !inSkipped(el) ? el.value : '';
 }
-function flagged(name) { return !!document.querySelector(`input[name="${name}"]:checked`); }
+function flagged(name) { const el = document.querySelector(`input[name="${name}"]:checked`); return !!el && !inSkipped(el); }
 // "Wrongly classified" ticked -> N; rated and not ticked -> Y; not rated -> blank
 function yn(flagName, ratingName) { return flagged(flagName) ? 'N' : (val(ratingName) ? 'Y' : ''); }
 
@@ -555,6 +598,10 @@ function collectFormData() {
     email: document.getElementById('email').value || '',
     followup: document.getElementById('followup').checked,
     consent: document.getElementById('consent').checked,
+    skipped_b1: document.getElementById('skip-b1').checked,
+    skipped_b2: document.getElementById('skip-b2').checked,
+    skipped_c: document.getElementById('skip-c').checked,
+    skipped_d: document.getElementById('skip-d').checked,
     feedback_question1: document.getElementById('question1').value || '',
     feedback_question2: document.getElementById('question2').value || '',
     feedback_question3: document.getElementById('question3').value || '',
@@ -635,7 +682,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const input = form.querySelector(`input[name="${btn.dataset.for}"]`);
     input.hidden = false; input.focus();
   });
-  form.addEventListener('change', () => { updateCounts(); saveDraft(); });
+  function applySkips() {
+    form.querySelectorAll('input[data-skip]').forEach(cb => cb.closest('.page').classList.toggle('skipped', cb.checked));
+  }
+  form.addEventListener('change', e => {
+    const el = e.target;
+    if (el.matches('input[data-skip]')) applySkips();
+    // Auto-advance: after a first rating, bring the next item into view
+    const item = el.type === 'radio' ? el.closest('.item') : null;
+    const firstRating = item && el.name === item.dataset.rate && !item.classList.contains('done');
+    updateCounts(); saveDraft();
+    if (firstRating) {
+      const list = Array.from(item.closest('.page').querySelectorAll('.item'));
+      const next = list[list.indexOf(item) + 1];
+      if (next) setTimeout(() => {
+        const top = next.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.42;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      }, 250);
+    }
+  });
+
+  // "Save & finish later" link at the bottom of every step except the last
+  pages.slice(0, -1).forEach(pg => pg.insertAdjacentHTML('beforeend',
+    '<p class="later"><button type="button" class="linkbtn save-later">Need a break? Save &amp; finish later</button></p>'));
+  const modal = document.getElementById('savedModal');
+  const pageLink = location.origin + location.pathname;
+  form.addEventListener('click', e => {
+    if (!e.target.closest('.save-later')) return;
+    saveDraft();
+    document.getElementById('resumeLink').textContent = pageLink;
+    document.getElementById('copyMsg').textContent = '';
+    modal.hidden = false;
+  });
+  document.getElementById('closeModal').addEventListener('click', () => { modal.hidden = true; });
+  modal.addEventListener('click', e => { if (e.target === modal) modal.hidden = true; });
+  document.getElementById('copyLink').addEventListener('click', async () => {
+    const msg = document.getElementById('copyMsg');
+    try { await navigator.clipboard.writeText(pageLink); msg.textContent = 'Link copied.'; }
+    catch (err) { msg.textContent = 'Please copy the link above.'; }
+  });
   let t; form.addEventListener('input', () => { clearTimeout(t); t = setTimeout(saveDraft, 500); });
   form.addEventListener('submit', e => e.preventDefault()); // Enter key never submits by accident
 
@@ -651,7 +736,9 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('backBtn').addEventListener('click', () => { showPage(current - 1); saveDraft(); });
   document.getElementById('submitBtn').addEventListener('click', submitForm);
 
-  showPage(restoreDraft(), false);
+  const startPage = restoreDraft();
+  applySkips();
+  showPage(startPage, false);
 });
 </script>
 </body>
