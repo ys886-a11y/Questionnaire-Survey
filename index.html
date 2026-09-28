@@ -81,6 +81,8 @@
   .flag { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); cursor: pointer; }
   .flag input { width: 17px; height: 17px; accent-color: var(--warn); }
   .flag:has(input:checked) { color: var(--warn); font-weight: 600; }
+  .flag.ok input { accent-color: var(--accent); }
+  .flag.ok:has(input:checked) { color: var(--accent); }
   .add-comment { background: none; border: none; color: var(--accent); font: inherit; font-size: 13px; cursor: pointer; padding: 4px 0; text-decoration: underline; }
   .item .remarks-input { margin-top: 8px; font-size: 14px; padding: 8px 10px; }
 
@@ -94,6 +96,13 @@
   .btn-secondary { background: #fff; color: var(--accent); }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
   [hidden] { display: none !important; }
+  .researcher { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14px; }
+  .researcher p { margin-bottom: 8px; }
+  .researcher a { color: var(--accent); }
+  .consent { display: flex; gap: 10px; align-items: flex-start; background: #fff; border: 2px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin: 18px 0 6px; font-size: 14px; cursor: pointer; }
+  .consent input { width: 20px; height: 20px; margin-top: 1px; flex: none; accent-color: var(--accent); }
+  .warn { color: #b3261e; font-size: 13px; font-weight: 600; }
+  input[type="email"] { width: 100%; padding: 10px 12px; border: 1px solid #b9c4b9; border-radius: 8px; font: inherit; background: #fff; color: var(--ink); }
 
   .status-message { margin-top: 16px; padding: 14px; border-radius: 8px; font-size: 14px; display: none; }
   .status-message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
@@ -133,6 +142,17 @@
       <h3>Disclosure</h3>
       <p class="small">This questionnaire is for academic research only. All responses are strictly confidential and will be analysed only in aggregate; no individual or organisation will be identified. Participation is voluntary and you may withdraw at any stage. The researchers declare no conflict of interest.</p>
 
+      <h3>About the researchers</h3>
+      <div class="researcher">
+        <p>This study is part of the doctoral research of <strong>Yogesh Kumar Sharma</strong>, PhD Scholar, Department of Mechanical Engineering, Shiv Nadar Institute of Eminence.</p>
+        <p><span class="small">Supervisor:</span> <strong>Prof. (Dr.) Divya Shrivastava</strong><br>
+           <span class="small">Co-Supervisor:</span> <strong>Prof. (Dr.) K. Mathiyazhagan</strong>, Thiagarajar School of Management, Madurai</p>
+        <p style="margin-bottom:0">For any questions, please contact: <a href="mailto:ys886@snu.edu.in">ys886@snu.edu.in</a></p>
+      </div>
+
+      <label class="consent"><input type="checkbox" id="consent" name="consent"> <span>I have read the information above and agree to take part in this study voluntarily.</span></label>
+      <p id="consentWarn" class="warn" hidden>Please tick the consent box to continue.</p>
+
       <h3>Section A · Respondent profile</h3>
       <div class="field"><label for="name">Name</label><input type="text" id="name" name="name" autocomplete="name"></div>
       <div class="field"><label for="position">Position</label><input type="text" id="position" name="position"></div>
@@ -147,7 +167,49 @@
           <label class="chip"><input type="checkbox" id="sector-ngo" name="sector" value="NGO"><span>NGO</span></label>
           <label class="chip"><input type="checkbox" id="sector-logistics" name="sector" value="Logistics"><span>Logistics</span></label>
           <label class="chip"><input type="checkbox" id="sector-farmer" name="sector" value="Farmer/Producer Group"><span>Farmer / Producer Group</span></label>
+          <label class="chip"><input type="checkbox" id="sector-other" name="sector" value="Other"><span>Other</span></label>
         </div>
+        <input type="text" id="sector_other_text" name="sector_other_text" placeholder="If other, please specify" style="margin-top:8px">
+      </div>
+
+      <div class="field">
+        <label>Years of experience related to food / perishable supply chains</label>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="experience" value="Less than 5"><span>&lt; 5</span></label>
+          <label class="chip"><input type="radio" name="experience" value="5-10"><span>5–10</span></label>
+          <label class="chip"><input type="radio" name="experience" value="11-20"><span>11–20</span></label>
+          <label class="chip"><input type="radio" name="experience" value="More than 20"><span>&gt; 20</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Supply chain(s) you mainly work with (tick all that apply)</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" id="chain-dairy" name="chain" value="Dairy"><span>Dairy</span></label>
+          <label class="chip"><input type="checkbox" id="chain-fv" name="chain" value="Fruits & Vegetables"><span>Fruits &amp; Vegetables</span></label>
+          <label class="chip"><input type="checkbox" id="chain-meat" name="chain" value="Meat / Poultry"><span>Meat / Poultry</span></label>
+          <label class="chip"><input type="checkbox" id="chain-fish" name="chain" value="Fish / Seafood"><span>Fish / Seafood</span></label>
+          <label class="chip"><input type="checkbox" id="chain-grains" name="chain" value="Grains"><span>Grains</span></label>
+          <label class="chip"><input type="checkbox" id="chain-other" name="chain" value="Other"><span>Other</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>How familiar are you with sustainability and resilience in perishable food supply chains?</label>
+        <div class="scale" role="radiogroup">
+          <label><input type="radio" name="familiarity" value="1" aria-label="1"><span>1</span></label>
+          <label><input type="radio" name="familiarity" value="2" aria-label="2"><span>2</span></label>
+          <label><input type="radio" name="familiarity" value="3" aria-label="3"><span>3</span></label>
+          <label><input type="radio" name="familiarity" value="4" aria-label="4"><span>4</span></label>
+          <label><input type="radio" name="familiarity" value="5" aria-label="5"><span>5</span></label>
+        </div>
+        <div class="scale-ends"><span>Not familiar</span><span>Highly familiar</span></div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email (optional)</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="Only used to share results or invite you to the next round">
+        <label class="flag ok" style="margin-top:8px"><input type="checkbox" id="followup" name="followup"> Send me a summary of the results / invite me to the next round</label>
       </div>
     </section>
 
@@ -490,6 +552,14 @@ function collectFormData() {
     sector_ngo: document.getElementById('sector-ngo').checked,
     sector_logistics: document.getElementById('sector-logistics').checked,
     sector_farmer: document.getElementById('sector-farmer').checked,
+    sector_other: document.getElementById('sector-other').checked,
+    sector_other_text: document.getElementById('sector_other_text').value || '',
+    experience_years: (document.querySelector('input[name="experience"]:checked') || {}).value || '',
+    supply_chains: Array.from(document.querySelectorAll('input[name="chain"]:checked')).map(cb => cb.value).join(', '),
+    familiarity: (document.querySelector('input[name="familiarity"]:checked') || {}).value || '',
+    email: document.getElementById('email').value || '',
+    followup: document.getElementById('followup').checked,
+    consent: document.getElementById('consent').checked,
     feedback_question1: document.getElementById('question1').value || '',
     feedback_question2: document.getElementById('question2').value || '',
     feedback_question3: document.getElementById('question3').value || '',
@@ -574,7 +644,15 @@ document.addEventListener('DOMContentLoaded', function () {
   let t; form.addEventListener('input', () => { clearTimeout(t); t = setTimeout(saveDraft, 500); });
   form.addEventListener('submit', e => e.preventDefault()); // Enter key never submits by accident
 
-  document.getElementById('nextBtn').addEventListener('click', () => { showPage(current + 1); saveDraft(); });
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    if (current === 0 && !document.getElementById('consent').checked) {
+      const w = document.getElementById('consentWarn'); w.hidden = false;
+      document.getElementById('consent').closest('.consent').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    showPage(current + 1); saveDraft();
+  });
+  document.getElementById('consent').addEventListener('change', e => { if (e.target.checked) document.getElementById('consentWarn').hidden = true; });
   document.getElementById('backBtn').addEventListener('click', () => { showPage(current - 1); saveDraft(); });
   document.getElementById('submitBtn').addEventListener('click', submitForm);
 
