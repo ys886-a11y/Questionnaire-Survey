@@ -105,6 +105,9 @@
   .btn-secondary { background: #fff; color: var(--accent); }
   .btn:disabled { opacity: .5; cursor: not-allowed; }
   [hidden] { display: none !important; }
+  .card-img { display: block; width: 100%; max-width: 640px; margin: 14px auto; border-radius: 8px; box-shadow: 0 4px 18px rgba(0,0,0,.15); }
+  .card-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .card-actions a.btn { text-decoration: none; display: inline-block; }
   .skipbox { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); margin: 6px 0 10px; cursor: pointer; }
   .skipbox input { width: 17px; height: 17px; accent-color: var(--accent); }
   .skip-note { display: none; background: #fff; border: 1px dashed #b9c4b9; border-radius: 10px; padding: 14px; font-size: 14px; }
@@ -289,6 +292,12 @@
     <section id="thanksPage" class="thanks" hidden>
       <h2>Thank you!</h2>
       <p>Your response has been recorded. We truly appreciate your time and expertise.</p>
+      <p class="small" style="margin-top:18px">As a small token of our gratitude, here is a personalised card of appreciation for you:</p>
+      <img id="cardImg" class="card-img" alt="Card of appreciation">
+      <div class="card-actions">
+        <a id="cardDownload" class="btn btn-primary" download="Card_of_Appreciation.png">Download card</a>
+        <button type="button" id="cardShare" class="btn btn-secondary" hidden>Share</button>
+      </div>
     </section>
   </form>
 </div>
@@ -327,16 +336,16 @@ const barriersData = {
                 { text: 'Declining producer incomes', id: 'incomes' }
             ],
             environmental: [
-                { text: 'Absence of green maintenance practices', id: 'green-maintenance' },
+                { text: 'Absence of green / eco-friendly maintenance practices', id: 'green-maintenance' },
                 { text: 'Inadequate capacity-building for sustainable products', id: 'capacity-building' },
                 { text: 'Limited access to green technologies', id: 'green-tech' },
                 { text: 'Lack of sustainability performance measurement', id: 'performance' },
                 { text: 'Low awareness of environmental impact of products', id: 'awareness-env' },
                 { text: 'Absence of sustainability-focused planning', id: 'planning' },
-                { text: 'Lack of eco-friendly maintenance strategies', id: 'eco-maintenance' }
+
             ],
             social: [
-                { text: 'Low awareness of sustainability benefits', id: 'awareness-benefits' },
+                { text: 'Low awareness and understanding of sustainability and its benefits', id: 'awareness-benefits' },
                 { text: 'Weak corporate social responsibility culture', id: 'csr' },
                 { text: 'Lack of consumer knowledge and awareness', id: 'consumer' },
                 { text: 'Weak legislative support for sustainability', id: 'legislative' },
@@ -350,29 +359,27 @@ const barriersData = {
                 { text: 'Governance and policy issues', id: 'governance' },
                 { text: 'Issues related to urban expansion', id: 'urban' },
                 { text: 'Fragmented farmer networks', id: 'networks' },
-                { text: 'Lack of knowledge and education on sustainability', id: 'education' },
-                { text: "Poor understanding of sustainability's importance", id: 'understanding' }
+
             ],
             functional: [
                 { text: 'Exposure to natural disasters', id: 'disasters' },
-                { text: 'Inaccurate demand forecasting', id: 'forecasting' },
+                { text: 'Poor demand forecasting and management', id: 'forecasting' },
                 { text: 'Shortage of skilled labor', id: 'labor' },
                 { text: 'Inadequate information systems', id: 'information' },
                 { text: 'High overhead costs', id: 'overhead' },
                 { text: 'Labor disputes and unrest', id: 'disputes' },
                 { text: 'Uncertainty in operational processes', id: 'uncertainty' },
                 { text: 'Poor worker safety practices', id: 'worker-safety' },
-                { text: 'Ineffective demand management', id: 'demand-mgmt' }
+
             ],
             operational: [
-                { text: 'Inadequate transportation or logistics systems', id: 'transportation' },
+                { text: 'Inadequate transportation, logistics and distribution systems', id: 'transportation' },
                 { text: 'Poor cold chain infrastructure', id: 'cold-chain' },
                 { text: 'Delays in raw material delivery', id: 'delays' },
                 { text: 'Fluctuating fuel prices', id: 'fuel' },
                 { text: 'Inefficient packaging practices', id: 'packaging' },
                 { text: 'Vulnerability to power outages', id: 'power' },
                 { text: 'High perishability of products', id: 'perishability' },
-                { text: 'Poor logistics and distribution systems', id: 'logistics-dist' },
                 { text: 'Inefficient harvest planning', id: 'harvest' },
                 { text: 'Seasonal supply variability', id: 'seasonal' },
                 { text: 'Disruption in transportation', id: 'disruption' },
@@ -382,11 +389,9 @@ const barriersData = {
             ],
             strategic: [
                 { text: 'Supply chain volatility (price, demand, supply)', id: 'volatility' },
-                { text: 'Impact of climate change', id: 'climate' },
-                { text: 'Unpredictable climate-related disruptions', id: 'climate-disruptions' },
+                { text: 'Climate change and unpredictable climate-related disruptions', id: 'climate' },
                 { text: 'Over-reliance on single suppliers', id: 'single-suppliers' },
                 { text: 'Growing population pressure', id: 'population' },
-                { text: 'Price instability', id: 'price-instability' },
                 { text: 'Supplier financial instability or bankruptcy', id: 'supplier-financial' }
             ],
             integrated: [
@@ -641,6 +646,7 @@ function submitForm() {
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.onload = function () {
     if (xhr.status === 200 || xhr.status === 302) {
+      makeCard(formData.name, formData.position, formData.organization);
       clearDraft();
       document.getElementById('questionnaireForm').reset();
       pages.forEach(p => p.classList.remove('active'));
@@ -660,6 +666,92 @@ function submitForm() {
     submitBtn.disabled = false; submitBtn.textContent = 'Submit';
   };
   xhr.send(params.toString());
+}
+
+// ---------- Card of appreciation (drawn in the browser) ----------
+function wrapLines(ctx, text, maxWidth) {
+  const words = String(text).split(/\s+/); const lines = []; let line = '';
+  words.forEach(w => {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = w; } else line = test;
+  });
+  if (line) lines.push(line);
+  return lines;
+}
+
+function makeCard(name, position, organization) {
+  const W = 1600, H = 1000, c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  const green = '#2c5f2d', gold = '#b08d3c', ink = '#1d2a1e', muted = '#5b675c';
+  const serif = 'Georgia, "Times New Roman", serif', sans = 'system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif';
+
+  x.fillStyle = '#fbfaf5'; x.fillRect(0, 0, W, H);
+  x.fillStyle = green; x.fillRect(0, 0, W, 26); x.fillRect(0, H - 26, W, 26);
+  x.strokeStyle = gold; x.lineWidth = 3; x.strokeRect(50, 60, W - 100, H - 120);
+  x.lineWidth = 1; x.strokeRect(62, 72, W - 124, H - 144);
+  x.textAlign = 'center';
+
+  x.fillStyle = gold; x.font = `600 26px ${sans}`;
+  x.fillText('WITH SINCERE THANKS', W / 2, 150);
+  x.fillStyle = green; x.font = `bold 66px ${serif}`;
+  x.fillText('Card of Appreciation', W / 2, 232);
+
+  x.fillStyle = muted; x.font = `italic 30px ${serif}`;
+  x.fillText('This is to gratefully acknowledge', W / 2, 310);
+
+  const who = (name || '').trim() || 'Our Valued Expert';
+  x.fillStyle = ink; let size = 60;
+  do { x.font = `bold ${size}px ${serif}`; size -= 2; } while (x.measureText(who).width > W - 300 && size > 30);
+  x.fillText(who, W / 2, 392);
+  x.strokeStyle = gold; x.lineWidth = 2;
+  x.beginPath(); x.moveTo(W / 2 - 260, 420); x.lineTo(W / 2 + 260, 420); x.stroke();
+
+  const role = [position, organization].map(v => (v || '').trim()).filter(Boolean).join(', ');
+  let y = 468;
+  if (role) {
+    x.fillStyle = muted; x.font = `28px ${sans}`;
+    wrapLines(x, role, W - 360).slice(0, 2).forEach(l => { x.fillText(l, W / 2, y); y += 38; });
+  }
+  y += 20;
+  x.fillStyle = ink; x.font = `30px ${serif}`;
+  const body = 'for generously contributing expert insights to the doctoral research study on Sustainability and Resilience in Perishable Food Supply Chains.';
+  wrapLines(x, body, W - 400).forEach(l => { x.fillText(l, W / 2, y); y += 44; });
+
+  x.fillStyle = muted; x.font = `24px ${sans}`;
+  x.fillText(new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }), W / 2, y + 20);
+
+  const cols = [
+    ['Yogesh Kumar Sharma', 'PhD Scholar'],
+    ['Prof. (Dr.) Divya Shrivastava', 'Supervisor'],
+    ['Prof. (Dr.) K. Mathiyazhagan', 'Co-Supervisor']
+  ];
+  const baseY = 790;
+  cols.forEach(([n, r], i) => {
+    const cx = W / 2 + (i - 1) * 470;
+    x.strokeStyle = '#c9cfc6'; x.lineWidth = 1.5;
+    x.beginPath(); x.moveTo(cx - 180, baseY - 40); x.lineTo(cx + 180, baseY - 40); x.stroke();
+    x.fillStyle = ink; x.font = `bold 25px ${sans}`; x.fillText(n, cx, baseY);
+    x.fillStyle = muted; x.font = `22px ${sans}`; x.fillText(r, cx, baseY + 32);
+  });
+  x.fillStyle = green; x.font = `600 22px ${sans}`;
+  x.fillText('Department of Mechanical Engineering · Shiv Nadar Institute of Eminence', W / 2, H - 96);
+
+  const url = c.toDataURL('image/png');
+  document.getElementById('cardImg').src = url;
+  const dl = document.getElementById('cardDownload');
+  dl.href = url;
+  dl.download = 'Card_of_Appreciation' + (name ? '_' + name.trim().replace(/[^A-Za-z0-9]+/g, '_') : '') + '.png';
+
+  const shareBtn = document.getElementById('cardShare');
+  c.toBlob(blob => {
+    if (!blob) return;
+    const file = new File([blob], dl.download, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      shareBtn.hidden = false;
+      shareBtn.onclick = () => navigator.share({ files: [file], title: 'Card of Appreciation' }).catch(() => {});
+    }
+  });
 }
 
 // ---------- Init ----------
