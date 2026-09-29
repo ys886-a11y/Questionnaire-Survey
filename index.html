@@ -161,11 +161,9 @@
       <h3>Disclosure</h3>
       <p class="small">This questionnaire is for academic research only. All responses are strictly confidential and will be analysed only in aggregate; no individual or organisation will be identified. Participation is voluntary and you may withdraw at any stage. The researchers declare no conflict of interest.</p>
 
-      <h3>About the researchers</h3>
+      <h3>About the researcher</h3>
       <div class="researcher">
         <p>This study is part of the doctoral research of <strong>Yogesh Kumar Sharma</strong>, PhD Scholar, Department of Mechanical Engineering, Shiv Nadar Institute of Eminence.</p>
-        <p><span class="small">Supervisor:</span> <strong>Prof. (Dr.) Divya Shrivastava</strong><br>
-           <span class="small">Co-Supervisor:</span> <strong>Prof. (Dr.) K. Mathiyazhagan</strong>, Thiagarajar School of Management, Madurai</p>
         <p style="margin-bottom:0">For any questions, please contact: <a href="mailto:ys886@snu.edu.in">ys886@snu.edu.in</a></p>
       </div>
 
@@ -722,13 +720,11 @@ function makeCard(name, position, organization) {
   x.fillText(new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }), W / 2, y + 20);
 
   const cols = [
-    ['Yogesh Kumar Sharma', 'PhD Scholar'],
-    ['Prof. (Dr.) Divya Shrivastava', 'Supervisor'],
-    ['Prof. (Dr.) K. Mathiyazhagan', 'Co-Supervisor']
+    ['Yogesh Kumar Sharma', 'PhD Scholar']
   ];
   const baseY = 790;
   cols.forEach(([n, r], i) => {
-    const cx = W / 2 + (i - 1) * 470;
+    const cx = W / 2 + (i - (cols.length - 1) / 2) * 470;
     x.strokeStyle = '#c9cfc6'; x.lineWidth = 1.5;
     x.beginPath(); x.moveTo(cx - 180, baseY - 40); x.lineTo(cx + 180, baseY - 40); x.stroke();
     x.fillStyle = ink; x.font = `bold 25px ${sans}`; x.fillText(n, cx, baseY);
